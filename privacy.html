@@ -7,19 +7,40 @@
 <title>개인정보 처리 방침 — 광고 문구 법률 검수기</title>
 <meta name="description" content="광고 문구 법률 검수기는 서버 없이 브라우저에서만 동작하는 정적 앱으로, 본문을 수집하거나 외부로 전송하지 않습니다." />
 <style>
-  :root { color-scheme: light dark; }
-  body { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; font: 15px/1.75 -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; color: #171a1f; background: #fbfcfd; }
-  @media (prefers-color-scheme: dark) { body { color: #e9edf1; background: #0c0f13; } a { color: #7cc4ff; } }
-  h1 { font-size: 24px; letter-spacing: -.02em; }
-  h2 { font-size: 16px; margin-top: 28px; }
-  .muted { opacity: .7; font-size: 13px; }
-  a { color: #0f6fd1; }
-  ul { padding-left: 20px; }
+  :root {
+    color-scheme: light dark;
+    --bg: #FAFAFA; --surface: #FFFFFF; --ink: #0C0D0F; --ink-2: #3C4045; --ink-3: #5A6067;
+    --line: #E7E8EA; --accent: #2F5BFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0A0B0D; --surface: #121316; --ink: #F4F5F7; --ink-2: #C7CBD2; --ink-3: #A6ACB5; --line: #24262B; --accent: #8AA4FF; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    max-width: 720px; margin: 0 auto; padding: 44px 22px 88px;
+    font: 15px/1.8 'PlexKR', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: var(--ink); background: var(--bg); letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 7px; margin-bottom: 18px;
+    font-size: 11.5px; font-weight: 700; color: var(--ink-3);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px;
+  }
+  h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.04em; font-weight: 800; margin: 0; }
+  h2 { font-size: 15px; letter-spacing: -.02em; font-weight: 800; margin: 30px 0 8px; }
+  p { margin: 0 0 6px; color: var(--ink-2); }
+  .muted { color: var(--ink-3); font-size: 12.5px; margin-top: 8px; }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  ul { padding-left: 20px; color: var(--ink-2); }
+  code { background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; font-size: 12px; }
+  .back { display: inline-block; margin-top: 34px; font-weight: 700; }
 </style>
 </head>
 <body>
+<span class="badge">광고 문구 법률 검수기</span>
 <h1>개인정보 처리 방침</h1>
-<p class="muted">광고 문구 법률 검수기 · 최종 갱신 2026-11-21</p>
+<p class="muted">최종 갱신 2026-11-21 · 서버 없음 · 계정 없음</p>
 
 <h2>1. 수집하는 개인정보</h2>
 <p>없습니다. 회원가입·로그인·결제가 없고 운영자 서버가 없습니다. 검수하려고 붙여넣은 광고 문구는 이용자의 브라우저 안에서만 분석되며, 앱이 그 내용을 받아 가지 않습니다.</p>
@@ -34,7 +55,7 @@
 <p>쿠키를 쓰지 않습니다. 분석 도구·광고 픽셀·외부 트래커를 넣지 않으며, 이용 기록을 수집하지 않습니다.</p>
 
 <h2>5. 보관과 삭제</h2>
-<p>입력한 내용은 브라우저의 사이트 데이터를 지우면 함께 삭제됩니다. 공용 PC에서는 검수 후 사이트 데이터를 지우거나 시크릿 창을 쓰시길 권합니다. 내려받은 리포트 파일(.txt)·인쇄물은 이용자가 직접 관리합니다.</p>
+<p>입력한 내용은 브라우저의 사이트 데이터를 지우면 함께 삭제됩니다. 공용 PC에서는 검수 후 사이트 데이터를 지우거나 시크릿 창을 쓰시길 권합니다. 내려받은 리포트 파일(.txt)·스프레드시트(.csv)·인쇄물은 이용자가 직접 관리합니다.</p>
 
 <h2>6. 제3자 제공</h2>
 <p>제3자에게 제공하는 데이터가 없습니다. 운영자는 이용자의 데이터를 받지 않으므로 별도 제공·위탁이 없습니다.</p>
@@ -42,6 +63,6 @@
 <h2>7. 문의</h2>
 <p>이 앱은 정적 파일로 배포되며 운영자에게 개인정보가 전달되지 않습니다. 문의·오류 제보는 배포 페이지에 안내된 연락처나 배포 저장소의 이슈로 남겨 주세요.</p>
 
-<p><a href="./">← 앱으로 돌아가기</a></p>
+<a class="back" href="./">← 앱으로 돌아가기</a>
 </body>
 </html>

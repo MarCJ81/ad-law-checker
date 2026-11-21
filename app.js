@@ -112,6 +112,26 @@
     return prefix + '-' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '-' + p(d.getHours()) + p(d.getMinutes()) + '.' + ext;
   }
 
+  function csvCell(v) {
+    const s = String(v == null ? '' : v);
+    return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  // CSV 출력: 같은 검수 결과를 스프레드시트로 넘긴다. (엑셀 한글 깨짐 방지는 download()의 BOM)
+  function buildCsv() {
+    if (!last) return '위험도,표현,규칙,법령,조문,제재,줄,문장,권장문구\r\n';
+    const rows = [['위험도', '표현', '규칙', '법령', '조문', '제재', '줄', '문장', '권장문구']];
+    last.findings.forEach(f => {
+      const loc = C.locate(state.text, f.start);
+      rows.push([
+        (D.severities[f.severity] && D.severities[f.severity].label) || f.severity,
+        f.match, f.label, f.law, f.ref, f.penalty,
+        loc.line, loc.sentence, (f.fixes || []).join(' / '),
+      ]);
+    });
+    return rows.map(r => r.map(csvCell).join(',')).join('\r\n');
+  }
+
   /* ── 검수 실행 ────────────────────────────────────── */
   function scanNow() {
     last = C.scan(state.text, {
@@ -730,6 +750,9 @@
         toast('검수 리포트를 복사했습니다.');
       } else if (act === 'download-report') {
         download(stampName('검수리포트', 'txt'), $('#reportBox').textContent);
+      } else if (act === 'download-csv') {
+        download(stampName('검수결과', 'csv'), buildCsv(), 'text/csv;charset=utf-8');
+        toast('검수 결과를 CSV로 저장했습니다.');
       } else if (act === 'print-report') {
         window.print();
       }
