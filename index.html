@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>광고 문구 법률 검수기 — 표시광고법·식품표시광고법·화장품법·의료법 금칙어 1초 점검</title>
+<meta name="description" content="상세페이지·블로그·스레드 글을 붙여넣으면 표시광고법·식품표시광고법·화장품법·의료법상 위험 표현을 고위험·주의·권고로 표시하고 안전한 대체 문구로 1클릭 치환합니다. 대가성(협찬·광고) 문구 자동 점검·삽입, 내 구독 AI 교정 브리지, 클라이언트용 검수 리포트까지. 본문은 서버로 전송되지 않습니다." />
+<meta name="theme-color" content="#ffffff" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 바로가기</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#" data-action="go-scan" aria-label="광고 문구 법률 검수기 홈">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="34" height="34">
+          <defs>
+            <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2d7dfa" /><stop offset="1" stop-color="#123a8c" />
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="38" height="38" rx="11" fill="url(#brandGrad)" />
+          <path d="M20 8.5v3.4M20 28.1v3.4M8.5 20h3.4M28.1 20h3.4" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 24.6l2.6-5.2 3 3.6 2.8-7.4 3.6 9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="20" cy="20" r="13.2" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.4" />
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>광고 문구 법률 검수기</strong>
+        <small>AD COPY LAW CHECKER</small>
+      </span>
+    </a>
+
+    <nav class="tabs" role="tablist" aria-label="주요 화면">
+      <button class="tab is-active" role="tab" aria-selected="true" data-tab="scan">검수<span class="tab-count" id="tabScanCount" hidden>0</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="disclosure">대가성·고지</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="bridge">AI 교정</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="report">검수 리포트</button>
+    </nav>
+
+    <div class="top-actions">
+      <button type="button" class="icon-btn" data-action="toggle-theme" aria-label="다크 모드로 전환" title="라이트/다크">
+        <svg class="ico-sun" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 1.6v2M10 16.4v2M1.6 10h2M16.4 10h2M4.1 4.1l1.4 1.4M14.5 14.5l1.4 1.4M15.9 4.1l-1.4 1.4M5.5 14.5l-1.4 1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg class="ico-moon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="btn btn-ghost" data-action="open-guide">
+        <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="10" cy="10" r="7.4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 7.6a2 2 0 1 1 3 1.8c-.7.4-1 .9-1 1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="14" r=".9" fill="currentColor"/></svg>
+        <span class="btn-label">사용법</span>
+      </button>
+      <button type="button" class="btn btn-primary" data-action="load-sample">
+        <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 5.5h9M4 10h12M4 14.5h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="btn-label">예시 불러오기</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="industry-bar">
+  <div class="ib-inner">
+    <div class="seg industry-seg" id="industrySeg" role="group" aria-label="업종 선택"></div>
+    <div class="ib-opts">
+      <label class="check"><input type="checkbox" id="optSponsored" checked /> 대가를 받은 글 <span class="muted">(협찬·체험단)</span></label>
+      <label class="check"><input type="checkbox" id="optInfo" checked /> 권고까지 보기</label>
+    </div>
+    <div class="ib-meta" id="ibMeta"></div>
+  </div>
+</div>
+
+<main id="main" tabindex="-1">
+  <!-- ── 검수 ─────────────────────────────────────────── -->
+  <section class="view" id="view-scan" role="tabpanel" aria-label="검수">
+    <div class="view-head">
+      <div class="view-title">
+        <h1>붙여넣으면 1초, 법률 위험 표현 검수</h1>
+        <p class="sub">상세페이지·블로그·스레드 글을 그대로 붙여넣으세요. 업종별 4대 법규 규칙과 대조해 <b>고위험·주의·권고</b>로 표시하고, 위험이 낮은 문구로 1클릭 치환합니다. 본문은 브라우저 밖으로 나가지 않습니다.</p>
+      </div>
+      <div class="summary" id="scanSummary"></div>
+    </div>
+
+    <div class="scan-grid">
+      <div class="panel input-panel">
+        <div class="panel-head">
+          <h2>광고 문구</h2>
+          <span class="muted" id="charCount">0자</span>
+        </div>
+        <textarea id="adText" spellcheck="false" aria-label="검수할 광고 문구"
+          placeholder="여기에 광고 문구를 붙여넣으세요.&#10;&#10;예) &#10;샘플헬스 오메가3 — 혈관 건강의 시작&#10;꾸준히 드시면 콜레스테롤 개선에 도움을 주고, 면역력 강화까지 기대할 수 있습니다.&#10;부작용 없이 안전하게 드실 수 있습니다."></textarea>
+        <div class="input-foot">
+          <div class="undo-group">
+            <button type="button" class="btn btn-ghost btn-sm" id="undoBtn" data-action="undo" disabled>
+              <svg viewBox="0 0 20 20" width="13" height="13" aria-hidden="true"><path d="M7 6H12.2a4.3 4.3 0 0 1 0 8.6H8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9.2 3.4L6.4 6l2.8 2.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              되돌리기
+            </button>
+            <button type="button" class="btn btn-ghost btn-sm" data-action="apply-all">고위험 일괄 치환</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-action="load-sample">예시</button>
+          </div>
+          <span class="input-note" id="inputNote">서버 전송 0건 · 저장은 이 브라우저에만</span>
+        </div>
+      </div>
+
+      <div class="result-col">
+        <div class="panel score-panel">
+          <div class="score-main">
+            <div class="gauge" id="gauge" style="--p:100;--gc:#16a34a">
+              <div class="gauge-inner">
+                <b id="safetyNum">100</b>
+                <span>안전도</span>
+              </div>
+            </div>
+            <div class="score-text">
+              <div class="score-top">
+                <span class="badge grade a" id="gradeBadge">A</span>
+                <strong id="gradeLabel">패턴 기준 통과</strong>
+              </div>
+              <p class="score-sub" id="scoreSub">아직 검수할 문구가 없습니다.</p>
+              <div class="sev-chips" id="sevChips"></div>
+            </div>
+          </div>
+          <div class="group-chips" id="groupChips"></div>
+        </div>
+
+        <div class="panel hl-panel">
+          <div class="panel-head">
+            <h2>위험 표현 하이라이트</h2>
+            <div class="seg mini" id="hlSeg" role="group" aria-label="하이라이트 보기">
+              <button type="button" data-hl="mark" class="is-on">하이라이트</button>
+              <button type="button" data-hl="plain">원문</button>
+            </div>
+          </div>
+          <div class="hl-body" id="hlView" aria-live="polite">
+            <p class="hl-empty">왼쪽에 광고 문구를 붙여넣으면 위험한 표현에 색이 입혀집니다.</p>
+          </div>
+          <div class="hl-legend">
+            <span><i class="dot high"></i>고위험</span>
+            <span><i class="dot warn"></i>주의</span>
+            <span><i class="dot info"></i>권고</span>
+            <span class="muted">표시를 누르면 해당 카드로 이동합니다</span>
+          </div>
+        </div>
+
+        <div class="panel findings-panel">
+          <div class="panel-head">
+            <h2>발견된 표현 <span class="count-pill" id="findingCount">0</span></h2>
+            <div class="chip-row" id="sevFilter" role="group" aria-label="심각도 필터"></div>
+          </div>
+          <div class="findings" id="findingsList"></div>
+          <div class="findings-empty" id="findingsEmpty">
+            <p><strong>규칙 기준 위험 표현 0건입니다.</strong></p>
+            <p class="muted">다만 이미지·영상 속 문구, 전체 맥락, 근거 자료는 검사하지 않습니다. 아래 체크리스트와 검수 리포트를 함께 확인하세요.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 대가성·고지 ──────────────────────────────────── -->
+  <section class="view" id="view-disclosure" role="tabpanel" aria-label="대가성·고지" hidden>
+    <div class="view-head">
+      <div class="view-title">
+        <h1>대가성 표시 · 필수 고지</h1>
+        <p class="sub">공정위 「추천·보증 등에 관한 표시·광고 심사지침」(2026.6.1 시행)은 대가를 받은 후기의 <b>경제적 이해관계</b>를 제목이나 첫 부분에 표시하도록 합니다. 받은 내용을 고르면 문구가 만들어지고, 본문 맨 앞에 바로 넣을 수 있습니다.</p>
+      </div>
+      <div class="summary" id="discSummary"></div>
+    </div>
+
+    <div class="disc-grid">
+      <div class="panel disc-form">
+        <div class="panel-head"><h2>받은 내용</h2><span class="muted">해당하는 것 하나</span></div>
+        <div class="check-grid kind-grid" id="kindGrid" role="group" aria-label="대가 유형"></div>
+
+        <div class="field-row">
+          <div class="field grow">
+            <label for="brandName">업체·브랜드명 <span class="muted">(선택)</span></label>
+            <input id="brandName" type="text" maxlength="40" placeholder="예: 샘플뷰티" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="mediaSel">올릴 곳</label>
+            <select id="mediaSel"></select>
+          </div>
+        </div>
+
+        <div class="disc-preview">
+          <span class="preview-label">표시 문구</span>
+          <p id="discSentence">본 게시물은 해당 업체로부터 제품을 무상으로 제공받아 작성했습니다.</p>
+          <span class="preview-tip" id="discTip"></span>
+        </div>
+
+        <div class="prompt-actions">
+          <button type="button" class="btn btn-primary btn-sm" data-action="insert-disclosure">본문 맨 앞에 넣기</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-action="copy-disclosure">문구 복사</button>
+          <span class="muted" id="discState"></span>
+        </div>
+
+        <div class="guide-block">
+          <h3 class="mini-title">표시 위치 — 지침이 정한 형식</h3>
+          <ul class="rule-list">
+            <li><b>제목 또는 첫 부분.</b> 본문과 구분되게, 글자 크기를 본문보다 크게 하거나 색을 달리합니다.</li>
+            <li><b>댓글·더보기 뒤는 인정되지 않습니다.</b> 추가 동작이 필요한 위치는 표시로 보지 않습니다.</li>
+            <li><b>사진 매체</b>는 사진 안에 넣거나, 본문 첫 부분에 넣습니다. 해시태그는 원칙적으로 첫 번째.</li>
+            <li><b>동영상</b>은 제목·영상 시작과 끝에 넣고, 길면 5분마다 반복합니다.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3 class="mini-title">표시로 <em>인정되지 않는</em> 표현</h3>
+          <div class="bad-words" id="badWords"></div>
+          <p class="foot-note">위 단어는 지침이 "명확한 내용에 해당하지 않는 예시"로 든 것입니다. 받은 내용과 대가성을 함께 쓰세요.</p>
+        </div>
+      </div>
+
+      <div class="panel checklist-panel">
+        <div class="panel-head">
+          <h2>필수 고지 체크리스트</h2>
+          <span class="muted" id="checkSummary"></span>
+        </div>
+        <div class="checklist" id="checklist"></div>
+        <p class="foot-note">✓ 통과 · ✕ 보완 필요 · ? 직접 확인. 자동 판정은 문구 안에 해당 표현이 있는지만 봅니다. 실제 고지가 화면에 보이는지는 눈으로 확인하세요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AI 교정 ──────────────────────────────────────── -->
+  <section class="view" id="view-bridge" role="tabpanel" aria-label="AI 교정" hidden>
+    <div class="view-head">
+      <div class="view-title">
+        <h1>내 구독 AI로 안전하게 고치기</h1>
+        <p class="sub">걸린 문장과 업종 규칙, 대가성 상태를 하나의 프롬프트로 묶습니다. 프롬프트를 복사하고 평소 쓰는 AI에 붙여넣으면, 사실을 새로 만들지 않는 선에서 문구를 고쳐 줍니다. 고친 글을 아래에 붙여넣으면 다시 검수합니다.</p>
+      </div>
+      <div class="summary" id="bridgeSummary"></div>
+    </div>
+
+    <div class="bridge-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>교정 프롬프트</h2>
+          <span class="muted" id="promptLen"></span>
+        </div>
+        <div class="seg" id="modeSeg" role="group" aria-label="교정 강도">
+          <button type="button" data-mode="fix" class="is-on">걸린 표현만 교체</button>
+          <button type="button" data-mode="rewrite">전체 다시 쓰기</button>
+        </div>
+        <pre class="prompt-box" id="promptBox" tabindex="0"></pre>
+        <div class="prompt-actions">
+          <button type="button" class="btn btn-primary btn-sm" data-action="copy-prompt">프롬프트 복사</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-action="download-prompt">.txt</button>
+          <span class="muted" id="copyState"></span>
+        </div>
+        <div class="bridge-btns" id="bridgeBtns"></div>
+        <p class="bridge-note" id="bridgeNote">각 서비스 로그인은 직접 하셔야 합니다. 프롬프트가 클립보드에 복사된 상태로 새 창이 열립니다.</p>
+        <p class="bridge-note">이 도구는 AI 서비스에 본문을 자동 전송하지 않습니다. 붙여넣는 순간부터는 해당 서비스의 약관이 적용됩니다.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>AI가 고쳐 준 글 붙여넣기</h2>
+          <span class="ai-badge" id="bridgeBadge" hidden>교정본</span>
+        </div>
+        <textarea id="aiAnswer" class="ai-answer" spellcheck="false" placeholder="ChatGPT·Claude·Gemini가 고쳐 준 본문을 통째로 붙여넣으세요.&#10;머리말·코드블록은 자동으로 걷어냅니다."></textarea>
+        <div class="ai-result" id="aiResult"></div>
+        <div class="prompt-actions">
+          <button type="button" class="btn btn-primary btn-sm" data-action="apply-ai">이 글로 교체하고 재검수</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-action="clear-ai">비우기</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-action="revert-ai" id="revertAi" hidden>교체 전으로</button>
+        </div>
+        <div class="bridge-loop">
+          <h3 class="mini-title">반복 검수 루프</h3>
+          <ol class="loop-list">
+            <li><span>1</span>검수 탭에서 위험 표현을 확인합니다.</li>
+            <li><span>2</span>여기서 프롬프트를 복사해 내 AI에 붙여넣습니다.</li>
+            <li><span>3</span>AI가 준 본문을 붙여넣고 <b>교체하고 재검수</b>를 누릅니다.</li>
+            <li><span>4</span>안전도가 <b>0건 통과</b>가 될 때까지 1~3을 반복합니다.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 검수 리포트 ──────────────────────────────────── -->
+  <section class="view" id="view-report" role="tabpanel" aria-label="검수 리포트" hidden>
+    <div class="view-head">
+      <div class="view-title">
+        <h1>클라이언트용 검수 리포트</h1>
+        <p class="sub">같은 검수 결과로 1장짜리 사전 점검 리포트를 만듭니다. 광고주·클라이언트에게 "사전 검수했고, 남은 위험은 이것"이라고 설명할 때 쓰세요. 근거와 제재, 권장 문구, 필수 고지 상태가 함께 들어갑니다.</p>
+      </div>
+      <div class="summary" id="reportSummary"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>리포트 미리보기</h2>
+        <span class="muted" id="reportMeta"></span>
+      </div>
+      <div class="field-row report-fields">
+        <div class="field grow">
+          <label for="projectName">프로젝트·브랜드명 <span class="muted">(선택)</span></label>
+          <input id="projectName" type="text" maxlength="60" placeholder="예: 샘플뷰티 11월 상세페이지" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="reviewerName">검수자 <span class="muted">(선택)</span></label>
+          <input id="reviewerName" type="text" maxlength="40" placeholder="예: 김마케터" autocomplete="off" />
+        </div>
+      </div>
+      <pre class="report-box" id="reportBox" tabindex="0" aria-live="polite"></pre>
+      <div class="prompt-actions">
+        <button type="button" class="btn btn-primary btn-sm" data-action="copy-report">리포트 복사</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-action="download-report">.txt 저장</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-action="print-report">인쇄 / PDF</button>
+        <span class="muted" id="reportChars"></span>
+      </div>
+      <p class="foot-note" id="reportNote"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p><strong>광고 문구 법률 검수기</strong> · 서버 없음 · 계정 없음 · 본문 외부 전송 0건 · 모든 입력은 이 브라우저(localStorage)에만 저장됩니다.</p>
+    <p class="muted">이 도구는 문구 패턴을 미리 정한 규칙과 대조하는 참고용 사전 점검 도구입니다. 실제 위법 여부는 광고의 전체 맥락, 근거 자료, 매체, 고지 방식에 따라 달라지며 최종 판단은 변호사·각 심의기관의 확인이 필요합니다. 법령 기준일 2026-11-21.</p>
+    <p class="muted"><a href="privacy.html">개인정보 처리방침</a></p>
+  </div>
+</footer>
+
+<div class="modal-root" id="modalRoot" hidden></div>
+<div class="toast-root" id="toastRoot" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script src="engines/ai-bridge.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
