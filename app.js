@@ -452,10 +452,19 @@
       '</div>';
   }
 
+  /* 무료 체험은 짧은 교정만 받는다(Worker 12초 제한 실측). Pro/구독 AI는 전체 프롬프트. */
+  function freePromptText() {
+    const text = String(state.text || '').trim();
+    if (!text) return '';
+    const trimmed = text.length > 500 ? text.slice(0, 500) + '…' : text;
+    return '너는 표시광고법 검수자다. 아래 문구에서 위반 위험이 있는 표현을 찾아 이유와 함께 3개까지 짚고, ' +
+      '안전한 대체 문구를 3개 제안해라. 700자 이내.\n\n문구: ' + trimmed;
+  }
+
   function runFreeFix() {
     if (!FA) { toast('무료 체험 엔진을 불러오지 못했어요.'); return; }
     if (freeBusy) return;
-    const p = promptText();
+    const p = freePromptText();
     if (!p) { toast('문구를 먼저 넣고 검수하세요.'); return; }
     freeBusy = true;
     const btn = $('[data-action="free-fix"]');
@@ -466,7 +475,7 @@
     if (card) card.hidden = true;
     const done = () => { freeBusy = false; if (btn) { btn.disabled = false; btn.textContent = '무료 AI로 교정'; } };
 
-    FA.generate({ task: 'text', prompt: p, options: { temperature: 0.3, maxTokens: 900 } }, { timeoutMs: 45000 })
+    FA.generate({ task: 'text', prompt: p, options: { temperature: 0.3, maxTokens: 600 } }, { timeoutMs: 45000 })
       .then(res => {
         done();
         if (res && res.ok) {
