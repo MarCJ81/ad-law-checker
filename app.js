@@ -9,7 +9,7 @@
   const C = window.CORE;
   const B = window.AI_BRIDGE;
   const FA = window.FreeAI || null;   // engines/free-ai-client.js
-  if (FA) FA.configure({ endpoint: 'https://free-ai-taste.goodday810202.workers.dev', app: 'ad-law-checker' });
+  if (FA) FA.configure({ endpoint: 'https://free-ai-taste.onetap-ai.workers.dev', app: 'ad-law-checker' });
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const esc = C.esc;
