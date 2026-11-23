@@ -452,6 +452,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 64px; }
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .f-loc { font-size: 10px; color: var(--ink-4); margin-left: auto; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.f-note { font-size: 10px; font-weight: 700; color: var(--ink-3); background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 2px 7px; white-space: nowrap; }
 .f-label { font-size: 12.5px; font-weight: 700; color: var(--ink); line-height: 1.45; }
 .f-law { font-size: 10.8px; color: var(--ink-3); margin-top: 3px; line-height: 1.55; }
 .f-penalty { font-size: 10.8px; color: var(--danger); margin-top: 3px; line-height: 1.55; font-weight: 600; }
@@ -771,3 +772,12 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 30px 24px 64px; }
   .report-box { max-height: none; border: 0; background: #fff; font-size: 11pt; }
   .view:not(#view-report) { display: none !important; }
 }
+
+/* ── 무료 AI 맛보기 (교정) ─────────────────────────────── */
+.free-taste { margin-top: 12px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); }
+.free-taste-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.free-taste-head strong { font-size: 12.5px; }
+.free-taste .prompt-actions { margin-top: 8px; }
+.free-limit { margin-top: 9px; padding: 10px 11px; border: 1px solid var(--line-strong, var(--line)); border-radius: 9px; background: var(--surface); font-size: 11.5px; line-height: 1.6; }
+.free-limit b { display: block; margin-bottom: 3px; }
+.free-limit-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }

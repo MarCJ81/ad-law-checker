@@ -8,6 +8,8 @@
   const D = window.AD_DATA;
   const C = window.CORE;
   const B = window.AI_BRIDGE;
+  const FA = window.FreeAI || null;   // engines/free-ai-client.js
+  if (FA) FA.configure({ endpoint: 'https://free-ai-taste.goodday810202.workers.dev', app: 'ad-law-checker' });
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const esc = C.esc;
@@ -38,6 +40,7 @@
   let scanTimer = null;
   let preAi = null;
   let aiApplied = false;
+  let freeBusy = false;
 
   /* ── 저장 ─────────────────────────────────────────── */
   const SAVE_KEYS = ['tab', 'theme', 'industry', 'text', 'sponsored', 'includeInfo',
@@ -317,6 +320,12 @@
         '<span class="f-sev">' + sevLabel(f.severity) + '</span>' +
         '<span class="f-match" title="' + esc(f.match) + '">' + esc(f.match) + '</span>' +
         '<span class="f-loc">L' + loc.line + ' · ' + loc.sentence + '번째 문장</span>' +
+        ((f.negated || f.relaxed)
+          ? '<span class="f-note" title="' + esc(f.negated
+              ? '부정 표현(' + (f.negatedBy || '없음/않음') + ')이 붙어 있어 위반으로 보지 않았습니다.'
+              : '띄어쓰기가 다르지만 같은 표현으로 잡았습니다.') + '">' +
+            (f.negated ? '부정문 확인' : '띄어쓰기 변형') + '</span>'
+          : '') +
         '</div>' +
         '<p class="f-label">' + esc(f.label) + '</p>' +
         '<p class="f-law">' + esc(f.law) + ' ' + esc(f.ref) + '</p>' +
@@ -423,6 +432,59 @@
       disclosure: last.disclosure,
       mode: state.mode,
     });
+  }
+
+  /* ── 무료 AI 맛보기 (교정) ─────────────────────────────── */
+  function renderFreeLimit(res) {
+    const card = $('#freeLimitCard');
+    const st = $('#freeStatus');
+    if (st) st.textContent = '오늘 무료 횟수를 다 썼어요';
+    if (!card) return;
+    const cta = (res && res.cta) || {};
+    const href = cta.keyUrl || 'https://aistudio.google.com/apikey';
+    card.hidden = false;
+    card.innerHTML =
+      '<b>무료 체험을 다 쓰셨서요</b>' +
+      '<div>' + esc((res && res.message) || '내 무료 키나 구독 AI로 이어서 교정할 수 있어요.') + '</div>' +
+      '<div class="free-limit-actions">' +
+        '<a class="btn btn-primary btn-sm" href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">내 무료 Gemini 키 연결</a>' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-action="copy-prompt">프롬프트 복사해서 구독 AI로</button>' +
+      '</div>';
+  }
+
+  function runFreeFix() {
+    if (!FA) { toast('무료 체험 엔진을 불러오지 못했어요.'); return; }
+    if (freeBusy) return;
+    const p = promptText();
+    if (!p) { toast('문구를 먼저 넣고 검수하세요.'); return; }
+    freeBusy = true;
+    const btn = $('[data-action="free-fix"]');
+    if (btn) { btn.disabled = true; btn.textContent = '무료 AI가 고치는 중…'; }
+    const st = $('#freeStatus');
+    if (st) st.textContent = '무료로 교정 중… (5~20초)';
+    const card = $('#freeLimitCard');
+    if (card) card.hidden = true;
+    const done = () => { freeBusy = false; if (btn) { btn.disabled = false; btn.textContent = '무료 AI로 교정'; } };
+
+    FA.generate({ task: 'text', prompt: p, options: { temperature: 0.3, maxTokens: 900 } }, { timeoutMs: 45000 })
+      .then(res => {
+        done();
+        if (res && res.ok) {
+          $('#aiAnswer').value = res.text;
+          $('#aiAnswer').dispatchEvent(new Event('input'));
+          if (st) st.textContent = '무료로 교정받았어요' + (res.provider ? ' · ' + res.provider : '');
+          const rem = $('#freeRemain');
+          if (rem && res.remaining !== undefined && res.remaining !== null) rem.textContent = '남은 무료 ' + res.remaining + '/' + (res.limit || 5) + '회';
+          toast('교정본을 받았어요 · [이 글로 교체하고 재검수]를 누르세요.');
+          return;
+        }
+        if (FA.isQuota(res)) { renderFreeLimit(res); return; }
+        if (st) st.textContent = (res && res.message) || '무료 교정에 실패했어요.';
+        toast((res && res.message) || '무료 교정에 실패했어요.');
+      }, () => {
+        done();
+        toast('무료 체험에 연결하지 못했어요.');
+      });
   }
 
   function renderPrompt() {
@@ -738,7 +800,8 @@
         $('#copyState').textContent = '복사됨';
       } else if (act === 'download-prompt') {
         download(stampName('교정-프롬프트', 'txt'), promptText());
-      } else if (act === 'apply-ai') applyAi();
+      } else if (act === 'free-fix') runFreeFix();
+      else if (act === 'apply-ai') applyAi();
       else if (act === 'clear-ai') {
         $('#aiAnswer').value = '';
         $('#aiResult').innerHTML = '';

@@ -17,6 +17,16 @@
   const num = new Intl.NumberFormat('ko-KR');
   const cache = new Map();
 
+  /* 한국어 어절·조사 엔진(engines/korean-text.js). 없으면 기존 정규식만 쓴다. */
+  const KT = (function () {
+    const g = typeof globalThis !== 'undefined' ? globalThis : root;
+    if (g && g.KoreanText) return g.KoreanText;
+    if (typeof require === 'function') {
+      try { return require('./engines/korean-text.js'); } catch (e) { /* noop */ }
+    }
+    return null;
+  })();
+
   const GW = { high: 9, warn: 4, info: 1 };
 
   function esc(s) {
@@ -59,23 +69,49 @@
     const win = rule.nearWindow || 14;
     let m;
     let guard = 0;
+
+    /* nearby 조건(onlyIfNear/unlessNear/unlessAfter)을 한곳에서 판정한다. */
+    function accepted(start, end) {
+      if (rule.onlyIfNear && rule.onlyIfNear.length) {
+        const around = text.slice(Math.max(0, start - win), Math.min(text.length, end + win));
+        if (!rule.onlyIfNear.some(t => around.includes(t))) return false;
+      }
+      if (rule.unlessNear && rule.unlessNear.length) {
+        const around = text.slice(Math.max(0, start - win), Math.min(text.length, end + win));
+        if (rule.unlessNear.some(t => around.includes(t))) return false;
+      }
+      if (rule.unlessAfter && rule.unlessAfter.length) {
+        const after = text.slice(end, end + 24);
+        if (rule.unlessAfter.some(t => after.startsWith(t))) return false;
+      }
+      return true;
+    }
+
     while ((m = re.exec(text)) !== null && guard++ < 500) {
       if (m[0] === '') { re.lastIndex++; continue; }
       const start = m.index;
       const end = start + m[0].length;
-      if (rule.onlyIfNear && rule.onlyIfNear.length) {
-        const around = text.slice(Math.max(0, start - win), Math.min(text.length, end + win));
-        if (!rule.onlyIfNear.some(t => around.includes(t))) continue;
-      }
-      if (rule.unlessNear && rule.unlessNear.length) {
-        const around = text.slice(Math.max(0, start - win), Math.min(text.length, end + win));
-        if (rule.unlessNear.some(t => around.includes(t))) continue;
-      }
-      if (rule.unlessAfter && rule.unlessAfter.length) {
-        const after = text.slice(end, end + 24);
-        if (rule.unlessAfter.some(t => after.startsWith(t))) continue;
-      }
+      if (!accepted(start, end)) continue;
       out.push({ start, end, match: m[0] });
+    }
+
+    /*
+     * 띄어쓰기 변형 보완: 규칙 용어가 "부작용 없음"인데 글에 "부작용없음"이나
+     * "부작용 이 없습니다"처럼 적힌 경우를 잡는다. 형태소 엔진이 있을 때만.
+     */
+    if (KT && rule.terms && !rule.regex) {
+      rule.terms.forEach(function (term) {
+        if (!/[\s]/.test(String(term))) return;
+        const hits = KT.phraseMatch(text, term, { gap: 1 });
+        hits.forEach(function (p) {
+          const start = p.index;
+          const end = p.index + p.length;
+          if (!accepted(start, end)) return;
+          if (out.some(function (o) { return start < o.end && end > o.start; })) return;
+          out.push({ start: start, end: end, match: text.slice(start, end), relaxed: true });
+        });
+      });
+      out.sort(function (a, b) { return a.start - b.start; });
     }
     return out;
   }
@@ -99,9 +135,20 @@
     for (const rule of activeRules(o.industry)) {
       if (rule.severity === 'info' && !o.includeInfo) continue;
       for (const m of findMatches(body, rule)) {
+        /* 부정문 판정: "치료 효과가 없습니다"처럼 부정하는 문장은 위반이 아니다.
+           다만 규칙 용어 자체가 "부작용 없음"인 경우는 match 안에 부정어가 있어
+           여기서 잡히지 않는다(그건 그대로 위반). */
+        const negBy = (KT && rule.severity !== 'info')
+          ? KT.negationKind(body, m.start, m.end - m.start)
+          : '';
+        const severity = negBy ? 'info' : rule.severity;
         cands.push({
           ruleId: rule.id,
-          severity: rule.severity,
+          severity: severity,
+          baseSeverity: rule.severity,
+          negated: !!negBy,
+          negatedBy: negBy,
+          relaxed: !!m.relaxed,
           group: rule.group,
           label: rule.label,
           start: m.start,
@@ -113,7 +160,7 @@
           why: rule.why,
           fixes: rule.fixes || [],
           evidence: !!rule.evidence,
-          weight: GW[rule.severity] || 1,
+          weight: GW[severity] || 1,
         });
       }
     }
