@@ -262,9 +262,12 @@
     const box = $('#hlView');
     if (!last) return;
     if (!last.chars) {
+      box.removeAttribute('data-i18n-skip');
       box.innerHTML = '<p class="hl-empty">왼쪽에 광고 문구를 붙여넣으면 위험한 표현에 색이 입혀집니다.</p>';
       return;
     }
+    // 검수 대상 광고 원문은 그대로 보여 준다(번역하지 않음).
+    box.setAttribute('data-i18n-skip', '');
     if (state.hlMode === 'plain') {
       box.textContent = state.text;
     } else {
