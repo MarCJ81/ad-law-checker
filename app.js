@@ -182,7 +182,9 @@
     const el = $('#ibMeta');
     if (!el || !last) return;
     el.innerHTML = '<b>' + esc(last.industryName) + '</b> · ' + esc(last.industryLaw) +
-      ' · 규칙 <b>' + last.scannedRules + '개</b> 적용';
+      (window.ONETAP_LANG === 'en'
+        ? ' · <b>' + last.scannedRules + '</b> rules applied'
+        : ' · 규칙 <b>' + last.scannedRules + '개</b> 적용');
   }
 
   function renderCounts() {
